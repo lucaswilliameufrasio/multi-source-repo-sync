@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Source Repo Sync</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Multi-Source Repo Sync</h1>
+      <p class="muted" id="orgs">Carregando…</p>
+    </div>
+    <div class="actions">
+      <button type="button" id="refresh">Atualizar situação</button>
+      <button type="button" id="analyze-all" class="secondary">Analisar histórico de tudo</button>
+    </div>
+  </header>
+
+  <p class="note" role="note">
+    Nada é mesclado, apagado ou sobrescrito por aqui. Sincronizar cria um branch novo e abre uma PR no repositório de destino,
+    depois que você digitar a confirmação exata. “Analisar” baixa o histórico para checar conflitos e pode levar um minuto.
+  </p>
+
+  <p id="status" role="status" aria-live="polite" class="muted"></p>
+  <main id="services"></main>
+
+  <section id="propagate" class="service" aria-labelledby="propagate-title">
+    <h2 id="propagate-title">Empurrar uma branch para as outras cópias</h2>
+    <p class="muted">Cria a mesma branch nas outras organizações que têm o serviço e abre uma PR para o <code>main</code> de cada uma. Serve para levar um trabalho feito num lugar para os demais. Branch que já existe lá com outro conteúdo não é tocada.</p>
+    <div class="form-row">
+      <div><label for="p-service">Serviço</label><select id="p-service"></select></div>
+      <div><label for="p-source">Onde a branch está</label><select id="p-source"></select></div>
+      <div><label for="p-branch">Branch</label><select id="p-branch"></select></div>
+    </div>
+    <p><button type="button" id="p-propose">Ver o que seria feito</button></p>
+    <div id="p-result" aria-live="polite"></div>
+  </section>
+
+  <dialog id="detail" aria-labelledby="detail-title">
+    <form method="dialog" class="dialog-head">
+      <h2 id="detail-title"></h2>
+      <button type="submit" class="icon" aria-label="Fechar">✕</button>
+    </form>
+    <div id="detail-body"></div>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>

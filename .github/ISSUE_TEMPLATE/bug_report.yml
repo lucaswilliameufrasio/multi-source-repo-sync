@@ -1,0 +1,39 @@
+name: Bug report
+description: Report something that does not work as expected
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the problem, including what you expected instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where did it happen?
+      options:
+        - status / plan
+        - sync
+        - propagate
+        - resolve
+        - serve (the web page)
+        - installer
+        - other / not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`multi-source-repo-sync version`, release tag, or commit hash."
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: The command you ran and its output. Redact tokens and private repository names.
+    validations:
+      required: true

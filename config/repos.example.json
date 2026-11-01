@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "organizations": {
+    "acme": "Acme-Org",
+    "globex": "Globex-Org",
+    "initech": "Initech-Org"
+  },
+  "organization_services": {
+    "initech": [
+      "api-gateway",
+      "worker-service"
+    ]
+  },
+  "services": [
+    "api-gateway",
+    "auth-service",
+    "worker-service"
+  ],
+  "sync_branches": [
+    "main",
+    "develop"
+  ],
+  "preserve_only_branches": [
+    "dev-test"
+  ]
+}

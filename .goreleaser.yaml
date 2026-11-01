@@ -1,0 +1,86 @@
+version: 2
+
+project_name: multi-source-repo-sync
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: multi-source-repo-sync
+    main: ./cmd/multi-source-repo-sync
+    binary: multi-source-repo-sync
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/lucaswilliameufrasio/multi-source-repo-sync/internal/cli.Version={{ .Version }}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - formats:
+      - tar.gz
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    files:
+      - README.md
+      - LICENSE
+      - config/repos.example.json
+
+checksum:
+  name_template: "{{ .ArtifactName }}.sha256"
+  split: true
+  extra_files:
+    - glob: ./scripts/multi-source-repo-sync-installer.sh
+    - glob: ./scripts/multi-source-repo-sync-installer.ps1
+
+source:
+  enabled: true
+  name_template: "{{ .ProjectName }}_{{ .Version }}_source"
+  format: tar.gz
+
+changelog:
+  use: git
+  filters:
+    exclude:
+      - '^chore\(release\):'
+
+release:
+  prerelease: auto
+  header: |
+    Keeps the same repositories living in several GitHub organizations in step with each other: status and plan (read-only), `sync`, `propagate`, assisted conflict resolution and a local web page (`serve`). It never merges, never force-pushes and never deletes: every write is a **new** branch and a pull request, after an exact typed confirmation.
+
+    ## Installation
+
+    ### Linux and macOS
+
+    ```sh
+    curl -fsSL https://github.com/lucaswilliameufrasio/multi-source-repo-sync/releases/download/{{ .Tag }}/multi-source-repo-sync-installer.sh | sh -s -- --tag {{ .Tag }}
+    ```
+
+    ### Windows PowerShell
+
+    ```powershell
+    Invoke-WebRequest https://github.com/lucaswilliameufrasio/multi-source-repo-sync/releases/download/{{ .Tag }}/multi-source-repo-sync-installer.ps1 -OutFile multi-source-repo-sync-installer.ps1
+    .\multi-source-repo-sync-installer.ps1 -Tag {{ .Tag }}
+    ```
+
+    The installers verify the SHA-256 checksum before installing. You also need `git` 2.38+ and the GitHub CLI (`gh`) logged in.
+
+    ### Check the version
+
+    ```sh
+    multi-source-repo-sync version
+    ```
+  extra_files:
+    - glob: ./scripts/multi-source-repo-sync-installer.sh
+    - glob: ./scripts/multi-source-repo-sync-installer.ps1
